@@ -1,8 +1,3 @@
 # Cookbook project!
 
-Details to come...
-
-
-## Server in /backend
-
-## Website in /frontend
+This is the server for the super awesome cookbook
