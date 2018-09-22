@@ -10,12 +10,16 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var sequelizeSessionStorage = require("connect-session-sequelize")(session.Store);
 
-// Process for loging functionality (Needs to be fixed!)
+// Logging
 const process = require("process");
 const util = require("util");
 const Logger = require("logger");
 
-var logger = new Logger(process.stdout, util.format, Logger.LogLevel.Debug);
+var logger = new Logger({
+    writer : process.stdout,
+    format : util.format,
+    logLevel : Logger.LogLevel.Debug
+});
 
 ///////////////////////////////////////////////////////////
 // Startup & Setup
@@ -52,6 +56,38 @@ Promise.all(modelCreations).then((/*values*/) => {
     /*models.recipies.create({
         name: "Random recipie #" + (Math.random() * 1000)
     });*/
+
+    // Maybe add way for adding logger instead of re-creating?
+    // TODO: Improve logger so we don't need currentSrvLogOut...
+    var currentSrvLogOut = "";
+    var logger = new Logger([
+        {
+            writer : process.stdout,
+            format : util.format,
+            logLevel : Logger.LogLevel.Debug
+        },
+        {
+            writer : {
+                write : (logOutput) => {
+                    if(logOutput == "\n") {
+                        models.log.create({
+                            content : currentSrvLogOut
+                        });
+                        currentSrvLogOut = "";
+                    }
+                    else {
+                        currentSrvLogOut += logOutput;
+                    }
+                }
+            },
+            format : util.format,
+            logLevel : Logger.LogLevel.Error
+        }
+    ]);
+
+    // Test log
+    logger.error("This is a test error");
+
 
     // Setup Express
     var app = express();
