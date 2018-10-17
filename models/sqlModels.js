@@ -14,11 +14,12 @@ module.exports = (sequelize, connection) =>{
 
     // Recipes
     models.recipies = connection.define("recipies", {
-        id: { type: sequelize.INTEGER, field: "id", primaryKey: true },
-        name: { type: sequelize.STRING(200), field: "name" },
-        portions: { type: sequelize.INTEGER, field: "portions" },
-        public: { type: sequelize.BOOLEAN, field: "public" },
-        lastMade: { type: sequelize.DATE, field: "last_made" }
+        id: { type: sequelize.INTEGER, field: "id", primaryKey: true, autoIncrement: true},
+        name: { type: sequelize.STRING(200), field: "name", allowNull : false },
+        url: { type: sequelize.STRING(200), field: "url", allowNull: true },
+        portions: { type: sequelize.INTEGER, field: "portions", allowNull: true },
+        public: { type: sequelize.BOOLEAN, field: "public", allowNull: true },
+        lastMade: { type: sequelize.DATE, field: "last_made", allowNull: true }
     }, { freezeTableName: true });
 
     // Recipe comments

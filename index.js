@@ -85,10 +85,6 @@ Promise.all(modelCreations).then((/*values*/) => {
         }
     ]);
 
-    // Test log
-    logger.error("This is a test error");
-
-
     // Setup Express
     var app = express();
     app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -106,7 +102,8 @@ Promise.all(modelCreations).then((/*values*/) => {
 
     // Api endpoints
     var endpointsArray = [
-        require("./endpoints/users.js")(models)
+        require("./endpoints/users.js")(models),
+        require("./endpoints/recipies.js")(models)
     ];
     endpointsArray.forEach((endpointCollection) => {
         endpointCollection.forEach((endpoint) => {
