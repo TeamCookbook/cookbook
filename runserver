@@ -1,1 +1,3 @@
+#!/bin/bash
+
 supervisor -i public/,db/ index.js
